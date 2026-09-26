@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌱 رحلة داخل عالم النبات</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Cairo for kid-friendly Arabic typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 50%, #e0f2f1 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .pulse-btn {
+            animation: pulseGlow 2s infinite;
+        }
+        @keyframes pulseGlow {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(34, 197, 94, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+        .bounce-custom {
+            animation: bounce 1.5s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+    </style>
+</head>
+<body class="text-slate-800 flex flex-col min-h-screen">
+
+    <header class="bg-emerald-600 text-white shadow-lg py-4 px-6 rounded-b-3xl mb-6">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-right">
+            <div class="flex items-center gap-3">
+                <span class="text-3xl bg-white/20 p-2 rounded-2xl">🌱</span>
+                <div>
+                    <h1 class="text-2xl sm:text-3xl font-black tracking-wide">رحلة داخل عالم النبات</h1>
+                    <p class="text-emerald-100 text-sm font-semibold">مغامرة تفاعلية ممتعة لطلاب الصف الثالث الابتدائي</p>
+                </div>
+            </div>
+            <div id="progress-indicator" class="bg-emerald-700/80 px-4 py-2 rounded-2xl text-sm font-bold border border-emerald-500 shadow-inner">
+                المرحلة: <span id="current-stage-name">اكتشف أجزاء النبات</span> 🌿
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-4xl w-full mx-auto px-4 pb-12 flex flex-col items-center justify-center">
+
+        <!-- STAGE 1: DISCOVER PLANT PARTS -->
+        <div id="stage-1" class="w-full bg-white/90 backdrop-blur rounded-3xl shadow-2xl p-6 sm:p-8 border-4 border-emerald-300 relative transition-all duration-500">
+            <div class="text-center mb-6">
+                <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider border border-emerald-200">الخطوة الأولى</span>
+                <h2 class="text-2xl sm:text-3xl font-black text-emerald-900 mt-2">اكتشف أجزاء النبات 🔍</h2>
+                <p class="text-slate-600 text-sm sm:text-base mt-1">اضغط على الأرقام الثلاثة الملونة على الصورة لتعرف وظيفة كل جزء!</p>
+            </div>
+
+            <!-- Plant Image Container with interactive hotspots -->
+            <div class="relative w-full max-w-2xl mx-auto bg-slate-900 rounded-2xl overflow-hidden shadow-inner border-4 border-emerald-400">
+                <img src="ChatGPT Image 26 سبتمبر 2026، 08_58_59 م.png" alt="نبات متكامل مع جذور وتربة" class="w-full h-auto object-contain block max-h-[450px] mx-auto" onerror="this.src='https://placehold.co/800x500/10b981/ffffff?text=%D9%86%D8%A8%D8%A7%D8%AA';">
+
+                <!-- Hotspot 1: Leaf (Top Left/Center) -->
+                <button onclick="openInfoModal(1)" id="btn-hotspot-1" class="absolute top-[28%] left-[28%] sm:left-[30%] w-10 h-10 sm:w-12 sm:h-12 bg-blue-500 hover:bg-blue-600 text-white font-black text-lg sm:text-xl rounded-full shadow-lg flex items-center justify-center pulse-btn border-2 border-white transition transform hover:scale-110 focus:outline-none" title="الورقة">
+                    1
+                </button>
+
+                <!-- Hotspot 2: Stem (Middle Center) -->
+                <button onclick="openInfoModal(2)" id="btn-hotspot-2" class="absolute top-[55%] left-[52%] w-10 h-10 sm:w-12 sm:h-12 bg-emerald-500 hover:bg-emerald-600 text-white font-black text-lg sm:text-xl rounded-full shadow-lg flex items-center justify-center pulse-btn border-2 border-white transition transform hover:scale-110 focus:outline-none" title="الساق">
+                    2
+                </button>
+
+                <!-- Hotspot 3: Roots (Bottom Center) -->
+                <button onclick="openInfoModal(3)" id="btn-hotspot-3" class="absolute bottom-[20%] left-[48%] w-10 h-10 sm:w-12 sm:h-12 bg-amber-500 hover:bg-amber-600 text-white font-black text-lg sm:text-xl rounded-full shadow-lg flex items-center justify-center pulse-btn border-2 border-white transition transform hover:scale-110 focus:outline-none" title="الجذر">
+                    3
+                </button>
+            </div>
+
+            <!-- Progress notification for discovering all parts -->
+            <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 bg-emerald-50 p-4 rounded-2xl border border-emerald-200">
+                <div class="text-sm font-bold text-emerald-800 flex items-center gap-2">
+                    <span id="discovery-status-icon" class="text-xl">⚠️</span>
+                    <span id="discovery-status-text">لقد اكتشفت (0 من 3) أجزاء حتى الآن. اضغط على جميع الأرقام للمتابعة!</span>
+                </div>
+                <button id="next-btn-stage-1" onclick="goToStage(2)" disabled class="px-6 py-3 bg-gray-300 text-gray-500 font-bold rounded-2xl shadow-md cursor-not-allowed transition-all duration-300 flex items-center gap-2">
+                    <span>التالي</span>
+                    <span>➜</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- STAGE 2: MULTIPLE CHOICE QUESTIONS -->
+        <div id="stage-2" class="hidden w-full bg-white/90 backdrop-blur rounded-3xl shadow-2xl p-6 sm:p-8 border-4 border-amber-300 relative">
+            <div class="text-center mb-6">
+                <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider border border-amber-200">الخطوة الثانية</span>
+                <h2 class="text-2xl sm:text-3xl font-black text-amber-900 mt-2">🧠 اختبر معلوماتك</h2>
+                <p class="text-slate-600 text-sm sm:text-base mt-1">أجب عن الأسئلة التالية لاختبار فهمك لأجزاء النبات ووظائفها.</p>
+                <div class="mt-3 inline-block bg-amber-50 px-4 py-1.5 rounded-full text-sm font-bold text-amber-700 border border-amber-200">
+                    السؤال <span id="current-mcq-num">1</span> من 5
+                </div>
+            </div>
+
+            <div id="mcq-container" class="max-w-2xl mx-auto bg-amber-50/50 p-6 rounded-2xl border-2 border-amber-200 mb-6 shadow-inner">
+                <h3 id="mcq-question" class="text-lg sm:text-xl font-bold text-slate-800 mb-4 text-center"></h3>
+                <div id="mcq-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <!-- Options generated dynamically -->
+                </div>
+            </div>
+
+            <div id="mcq-feedback" class="hidden max-w-2xl mx-auto mb-6 p-4 rounded-2xl text-center font-bold text-lg animate-bounce"></div>
+
+            <div class="flex justify-end max-w-2xl mx-auto">
+                <button id="next-mcq-btn" onclick="nextMCQQuestion()" class="hidden px-6 py-3 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold rounded-2xl shadow-lg transition transform hover:scale-105 flex items-center gap-2">
+                    <span>السؤال التالي</span>
+                    <span>➜</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- STAGE 3: TRUE OR FALSE -->
+        <div id="stage-3" class="hidden w-full bg-white/90 backdrop-blur rounded-3xl shadow-2xl p-6 sm:p-8 border-4 border-indigo-300 relative">
+            <div class="text-center mb-6">
+                <span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider border border-indigo-200">الخطوة الثالثة</span>
+                <h2 class="text-2xl sm:text-3xl font-black text-indigo-900 mt-2">✅❌ صح أم خطأ؟</h2>
+                <p class="text-slate-600 text-sm sm:text-base mt-1">حدد ما إذا كانت العبارة التالية صحيحة أم خاطئة.</p>
+                <div class="mt-3 inline-block bg-indigo-50 px-4 py-1.5 rounded-full text-sm font-bold text-indigo-700 border border-indigo-200">
+                    العبارة <span id="current-tf-num">1</span> من 5
+                </div>
+            </div>
+
+            <div id="tf-container" class="max-w-2xl mx-auto bg-indigo-50/50 p-6 rounded-2xl border-2 border-indigo-200 mb-6 shadow-inner text-center">
+                <h3 id="tf-statement" class="text-xl sm:text-2xl font-bold text-slate-800 mb-6"></h3>
+                <div class="flex justify-center gap-4">
+                    <button onclick="answerTF(true)" class="flex-1 max-w-xs py-4 px-6 bg-emerald-500 hover:bg-emerald-600 text-white font-black text-xl rounded-2xl shadow-lg transition transform hover:scale-105 flex items-center justify-center gap-3">
+                        <span>✅ صح</span>
+                    </button>
+                    <button onclick="answerTF(false)" class="flex-1 max-w-xs py-4 px-6 bg-rose-500 hover:bg-rose-600 text-white font-black text-xl rounded-2xl shadow-lg transition transform hover:scale-105 flex items-center justify-center gap-3">
+                        <span>❌ خطأ</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="tf-feedback" class="hidden max-w-2xl mx-auto mb-6 p-4 rounded-2xl text-center font-bold text-lg"></div>
+
+            <div class="flex justify-end max-w-2xl mx-auto">
+                <button id="next-tf-btn" onclick="nextTFQuestion()" class="hidden px-6 py-3 bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white font-bold rounded-2xl shadow-lg transition transform hover:scale-105 flex items-center gap-2">
+                    <span>السؤال التالي</span>
+                    <span>➜</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- STAGE 4: FINAL RESULTS -->
+        <div id="stage-4" class="hidden w-full bg-white/90 backdrop-blur rounded-3xl shadow-2xl p-6 sm:p-8 border-4 border-emerald-400 relative text-center">
+            <div class="max-w-xl mx-auto">
+                <div class="text-5xl mb-4 bounce-custom">🌟</div>
+                <h2 class="text-3xl font-black text-emerald-900 mb-2">أحسنت! انتهت اللعبة</h2>
+                <p id="final-achievement-title" class="text-xl font-bold text-emerald-700 mb-6"></p>
+
+                <div class="bg-emerald-50 p-6 rounded-3xl border-2 border-emerald-200 mb-6 shadow-inner space-y-3">
+                    <div class="flex justify-between items-center text-lg font-bold">
+                        <span class="text-slate-600">الإجابات الصحيحة:</span>
+                        <span id="score-correct" class="text-emerald-600 text-xl">0</span>
+                    </div>
+                    <div class="flex justify-between items-center text-lg font-bold">
+                        <span class="text-slate-600">الإجابات الخاطئة:</span>
+                        <span id="score-incorrect" class="text-rose-600 text-xl">0</span>
+                    </div>
+                    <hr class="border-emerald-200 my-2">
+                    <div class="flex justify-between items-center text-xl font-black">
+                        <span class="text-emerald-900">النتيجة النهائية:</span>
+                        <span id="final-score-display" class="bg-emerald-600 text-white px-4 py-1.5 rounded-2xl shadow">0 / 10</span>
+                    </div>
+                </div>
+
+                <button onclick="restartGame()" class="px-8 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-black text-lg rounded-2xl shadow-xl transition transform hover:scale-105 flex items-center justify-center gap-3 mx-auto">
+                    <span>🔄 إعادة اللعبة</span>
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <div id="info-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden transition-opacity duration-300">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border-4 border-emerald-400 relative transform transition-all scale-95 opacity-0" id="modal-content-box">
+            <div id="modal-icon" class="text-4xl text-center mb-3">🍃</div>
+            <h3 id="modal-title" class="text-2xl font-black text-center text-emerald-900 mb-3">عنوان الجزء</h3>
+            <p id="modal-description" class="text-slate-700 text-center text-lg leading-relaxed bg-emerald-50 p-4 rounded-2xl border border-emerald-200 mb-6"></p>
+            <div class="text-center">
+                <button onclick="closeInfoModal()" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-lg rounded-2xl shadow-lg transition transform hover:scale-105">
+                    فهمت، شكراً! 👍
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State variables
+        let discoveredParts = { 1: false, 2: false, 3: false };
+        let currentStage = 1;
+        let correctAnswersCount = 0;
+        let incorrectAnswersCount = 0;
+
+        // Stage 1 Data
+        const plantPartsData = {
+            1: {
+                title: "🍃 الورقة",
+                desc: "الورقة جزء من النبات، تساعد النبات على صنع غذائه."
+            },
+            2: {
+                title: "🌿 الساق",
+                desc: "الساق تدعم النبات وتنقل الماء والمواد الغذائية إلى أجزاء النبات."
+            },
+            3: {
+                title: "🌱 الجذر",
+                desc: "الجذر يثبت النبات في التربة ويمتص الماء والأملاح المعدنية."
+            }
+        };
+
+        // Stage 2 Data (MCQ)
+        const mcqQuestions = [
+            {
+                question: "أي جزء من النبات يمتص الماء من التربة؟",
+                options: ["أ) الورقة", "ب) الساق", "ج) الجذر", "د) الزهرة"],
+                correct: 2 // index of c) الجذر
+            },
+            {
+                question: "أي جزء يساعد النبات على صنع غذائه؟",
+                options: ["أ) الجذر", "ب) الورقة", "ج) الساق", "د) البذرة"],
+                correct: 1 // index of ب) الورقة
+            },
+            {
+                question: "ما وظيفة الساق؟",
+                options: ["أ) تثبيت النبات وامتصاص الماء", "ب) دعم النبات ونقل الماء", "ج) صنع البذور فقط", "د) امتصاص الضوء فقط"],
+                correct: 1 // index of ب) دعم النبات ونقل الماء
+            },
+            {
+                question: "أين يوجد الجذر عادة؟",
+                options: ["أ) فوق الزهرة", "ب) داخل الورقة", "ج) تحت التربة", "د) فوق الساق"],
+                correct: 2 // index of ج) تحت التربة
+            },
+            {
+                question: "أي مما يلي يعد جزءًا من النبات؟",
+                options: ["أ) الجذر", "ب) الحجر", "ج) القلم", "د) الكتاب"],
+                correct: 0 // index of أ) الجذر
+            }
+        ];
+        let currentMCQIndex = 0;
+
+        // Stage 3 Data (True/False)
+        const tfQuestions = [
+            {
+                statement: "الجذر يمتص الماء من التربة.",
+                answer: true
+            },
+            {
+                statement: "الورقة تساعد النبات على صنع غذائه.",
+                answer: true
+            },
+            {
+                statement: "الساق توجد دائمًا تحت التربة.",
+                answer: false
+            },
+            {
+                statement: "الجذر يساعد على تثبيت النبات في التربة.",
+                answer: true
+            },
+            {
+                statement: "الورقة هي الجزء الذي يثبت النبات في التربة.",
+                answer: false
+            }
+        ];
+        let currentTFIndex = 0;
+
+        // Open Info Modal
+        function openInfoModal(partId) {
+            const data = plantPartsData[partId];
+            document.getElementById('modal-title').innerText = data.title;
+            document.getElementById('modal-description').innerText = data.desc;
+            document.getElementById('modal-icon').innerText = data.title.split(' ')[0];
+
+            const modal = document.getElementById('info-modal');
+            const box = document.getElementById('modal-content-box');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                box.classList.remove('scale-95', 'opacity-0');
+                box.classList.add('scale-100', 'opacity-100');
+            }, 10);
+
+            // Mark part as discovered
+            if (!discoveredParts[partId]) {
+                discoveredParts[partId] = true;
+                const btn = document.getElementById(`btn-hotspot-${partId}`);
+                btn.classList.remove('bg-blue-500', 'bg-emerald-500', 'bg-amber-500', 'pulse-btn');
+                btn.classList.add('bg-emerald-600', 'ring-4', 'ring-emerald-300');
+                btn.innerHTML = '✔';
+                updateDiscoveryProgress();
+            }
+        }
+
+        // Close Info Modal
+        function closeInfoModal() {
+            const modal = document.getElementById('info-modal');
+            const box = document.getElementById('modal-content-box');
+            box.classList.remove('scale-100', 'opacity-100');
+            box.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 200);
+        }
+
+        // Update discovery status counter
+        function updateDiscoveryProgress() {
+            const count = Object.values(discoveredParts).filter(Boolean).length;
+            document.getElementById('discovery-status-text').innerText = `لقد اكتشفت (${count} من 3) أجزاء حتى الآن.`;
+            if (count === 3) {
+                document.getElementById('discovery-status-icon').innerText = '🎉';
+                document.getElementById('discovery-status-text').innerText = 'رائع! لقد اكتشفت جميع أجزاء النبات بنجاح!';
+                const nextBtn = document.getElementById('next-btn-stage-1');
+                nextBtn.disabled = false;
+                nextBtn.classList.remove('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
+                nextBtn.classList.add('bg-emerald-600', 'hover:bg-emerald-700', 'text-white', 'shadow-lg');
+            }
+        }
+
+        // Stage Navigation
+        function goToStage(stageNum) {
+            document.querySelectorAll('main > div').forEach(el => el.classList.add('hidden'));
+            currentStage = stageNum;
+
+            if (stageNum === 2) {
+                document.getElementById('stage-2').classList.remove('hidden');
+                document.getElementById('current-stage-name').innerText = 'اختبر معلوماتك 🧠';
+                loadMCQQuestion();
+            } else if (stageNum === 3) {
+                document.getElementById('stage-3').classList.remove('hidden');
+                document.getElementById('current-stage-name').innerText = 'صح أم خطأ ✅❌';
+                loadTFQuestion();
+            } else if (stageNum === 4) {
+                document.getElementById('stage-4').classList.remove('hidden');
+                document.getElementById('current-stage-name').innerText = 'النتيجة النهائية 🏆';
+                calculateFinalResults();
+            }
+        }
+
+        // Load MCQ Question
+        function loadMCQQuestion() {
+            const q = mcqQuestions[currentMCQIndex];
+            document.getElementById('current-mcq-num').innerText = currentMCQIndex + 1;
+            document.getElementById('mcq-question').innerText = q.question;
+            
+            const optionsContainer = document.getElementById('mcq-options');
+            optionsContainer.innerHTML = '';
+            
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'p-4 bg-white hover:bg-amber-100 text-slate-800 font-bold rounded-2xl border-2 border-amber-300 shadow-sm transition text-right text-base';
+                btn.innerText = opt;
+                btn.onclick = () => checkMCQAnswer(idx, btn);
+                optionsContainer.appendChild(btn);
+            });
+
+            document.getElementById('mcq-feedback').classList.add('hidden');
+            document.getElementById('next-mcq-btn').classList.add('hidden');
+        }
+
+        // Check MCQ Answer
+        function checkMCQAnswer(selectedIndex, selectedBtn) {
+            const q = mcqQuestions[currentMCQIndex];
+            const feedback = document.getElementById('mcq-feedback');
+            const optionsButtons = document.getElementById('mcq-options').children;
+
+            // Disable all options after selection
+            for (let btn of optionsButtons) {
+                btn.disabled = true;
+                btn.classList.add('opacity-75', 'cursor-not-allowed');
+            }
+
+            feedback.classList.remove('hidden');
+
+            if (selectedIndex === q.correct) {
+                correctAnswersCount++;
+                selectedBtn.classList.remove('bg-white', 'hover:bg-amber-100', 'border-amber-300');
+                selectedBtn.classList.add('bg-emerald-500', 'text-white', 'border-emerald-600', 'shadow-md');
+                feedback.innerHTML = '🎉 إجابة صحيحة!';
+                feedback.className = 'max-w-2xl mx-auto mb-6 p-4 rounded-2xl text-center font-bold text-lg bg-emerald-100 text-emerald-800 border-2 border-emerald-300';
+                
+                // Show Next button or transition
+                document.getElementById('next-mcq-btn').classList.remove('hidden');
+            } else {
+                incorrectAnswersCount++;
+                selectedBtn.classList.remove('bg-white', 'hover:bg-amber-100', 'border-amber-300');
+                selectedBtn.classList.add('bg-rose-500', 'text-white', 'border-rose-600', 'shadow-md');
+                
+                // Highlight correct answer
+                optionsButtons[q.correct].classList.remove('bg-white', 'hover:bg-amber-100', 'border-amber-300');
+                optionsButtons[q.correct].classList.add('bg-emerald-500', 'text-white', 'border-emerald-600', 'shadow-md');
+
+                feedback.innerHTML = 'حاول مرة أخرى 🌱 (الإجابة الصحيحة موضحة بالأخضر)';
+                feedback.className = 'max-w-2xl mx-auto mb-6 p-4 rounded-2xl text-center font-bold text-lg bg-rose-100 text-rose-800 border-2 border-rose-300';
+
+                // Allow retry after 1.5 seconds or show next button
+                setTimeout(() => {
+                    document.getElementById('next-mcq-btn').classList.remove('hidden');
+                }, 1000);
+            }
+        }
+
+        // Next MCQ Question
+        function nextMCQQuestion() {
+            currentMCQIndex++;
+            if (currentMCQIndex < mcqQuestions.length) {
+                loadMCQQuestion();
+            } else {
+                // Stage 2 completed notification & transition to Stage 3
+                alert('أحسنت! لقد أكملت المرحلة الأولى ⭐');
+                goToStage(3);
+            }
+        }
+
+        // Load True/False Question
+        function loadTFQuestion() {
+            const q = tfQuestions[currentTFIndex];
+            document.getElementById('current-tf-num').innerText = currentTFIndex + 1;
+            document.getElementById('tf-statement').innerText = q.statement;
+            document.getElementById('tf-feedback').classList.add('hidden');
+            document.getElementById('next-tf-btn').classList.add('hidden');
+
+            // Enable buttons
+            const tfButtons = document.getElementById('tf-container').querySelectorAll('button');
+            tfButtons.forEach(btn => {
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            });
+        }
+
+        // Answer True/False
+        function answerTF(userAnswer) {
+            const q = tfQuestions[currentTFIndex];
+            const feedback = document.getElementById('tf-feedback');
+            const tfButtons = document.getElementById('tf-container').querySelectorAll('button');
+
+            tfButtons.forEach(btn => btn.disabled = true);
+            feedback.classList.remove('hidden');
+
+            if (userAnswer === q.answer) {
+                correctAnswersCount++;
+                feedback.innerHTML = '🎉 أحسنت!';
+                feedback.className = 'max-w-2xl mx-auto mb-6 p-4 rounded-2xl text-center font-bold text-lg bg-emerald-100 text-emerald-800 border-2 border-emerald-300';
+            } else {
+                incorrectAnswersCount++;
+                feedback.innerHTML = '❌ حاول مرة أخرى!';
+                feedback.className = 'max-w-2xl mx-auto mb-6 p-4 rounded-2xl text-center font-bold text-lg bg-rose-100 text-rose-800 border-2 border-rose-300';
+            }
+
+            document.getElementById('next-tf-btn').classList.remove('hidden');
+        }
+
+        // Next True/False Question
+        function nextTFQuestion() {
+            currentTFIndex++;
+            if (currentTFIndex < tfQuestions.length) {
+                loadTFQuestion();
+            } else {
+                goToStage(4);
+            }
+        }
+
+        // Calculate Final Results
+        function calculateFinalResults() {
+            const totalScore = correctAnswersCount;
+            document.getElementById('score-correct').innerText = correctAnswersCount;
+            document.getElementById('score-incorrect').innerText = incorrectAnswersCount;
+            document.getElementById('final-score-display').innerText = `${totalScore} / 10`;
+
+            let achievementMsg = '';
+            if (totalScore === 10) {
+                achievementMsg = "🏆 ممتاز! أنت خبير في أجزاء النبات!";
+            } else if (totalScore >= 8) {
+                achievementMsg = "🌟 رائع! لديك معرفة ممتازة بالنبات.";
+            } else if (totalScore >= 6) {
+                achievementMsg = "👏 جيد جدًا! واصل التعلم.";
+            } else {
+                achievementMsg = "🌱 حاول مرة أخرى وتعلم المزيد عن أجزاء النبات.";
+            }
+            document.getElementById('final-achievement-title').innerText = achievementMsg;
+        }
+
+        // Restart Game
+        function restartGame() {
+            discoveredParts = { 1: false, 2: false, 3: false };
+            currentMCQIndex = 0;
+            currentTFIndex = 0;
+            correctAnswersCount = 0;
+            incorrectAnswersCount = 0;
+
+            // Reset stage 1 buttons UI
+            for (let i = 1; i <= 3; i++) {
+                const btn = document.getElementById(`btn-hotspot-${i}`);
+                btn.className = `absolute w-10 h-10 sm:w-12 sm:h-12 text-white font-black text-lg sm:text-xl rounded-full shadow-lg flex items-center justify-center pulse-btn border-2 border-white transition transform hover:scale-110 focus:outline-none ${i===1?'top-[28%] left-[28%] sm:left-[30%] bg-blue-500 hover:bg-blue-600':i===2?'top-[55%] left-[52%] bg-emerald-500 hover:bg-emerald-600':'bottom-[20%] left-[48%] bg-amber-500 hover:bg-amber-600'}`;
+                btn.innerHTML = i;
+            }
+
+            document.getElementById('discovery-status-icon').innerText = '⚠️';
+            document.getElementById('discovery-status-text').innerText = 'لقد اكتشفت (0 من 3) أجزاء حتى الآن. اضغط على جميع الأرقام للمتابعة!';
+            
+            const nextBtn = document.getElementById('next-btn-stage-1');
+            nextBtn.disabled = true;
+            nextBtn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700', 'text-white', 'shadow-lg');
+            nextBtn.classList.add('bg-gray-300', 'text-gray-500', 'cursor-not-allowed');
+
+            goToStage(1);
+        }
+    </script>
+</body>
+</html>
